@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Girl 💗</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Fredoka', sans-serif;
+    background: linear-gradient(to bottom, #ffe4ec, #ffd6e7);
+    text-align: center;
+    overflow: hidden;
+}
+
+/* JUDUL */
+h1 {
+    margin: 10px;
+    font-size: 34px;
+    color: #ff69b4;
+    text-shadow: 2px 2px 0 #fff;
+    animation: bounce 2s infinite;
+}
+
+/* BOUNCE */
+@keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* SLIDER */
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 85vh;
+    overflow: hidden;
+}
+
+.slider {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+    touch-action: pan-y;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* BUTTON */
+button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ff9ecb;
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* FOOTER */
+.footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    color: white;
+    font-size: 14px;
+}
+
+/* EMOJI */
+.emoji {
+    position: fixed;
+    font-size: 25px;
+    opacity: 0.4;
+    animation: float 10s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); opacity: 0; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* CHIBI STICKER */
+.chibi {
+    position: fixed;
+    font-size: 40px;
+    animation: spin 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* BUBBLE */
+.bubble {
+    position: fixed;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    animation: float 8s linear infinite;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💗 My Girl 💗</h1>
+
+<div class="slider-container">
+    <button class="prev" onclick="prevSlide()">❮</button>
+
+    <div class="slider" id="slider">
+        <div class="slide"><img src="foto1.jpg"></div>
+        <div class="slide"><img src="foto2.jpg"></div>
+        <div class="slide"><img src="foto3.jpg"></div>
+        <div class="slide"><img src="foto4.jpg"></div>
+        <div class="slide"><img src="foto5.jpg"></div>
+        <div class="slide"><img src="foto6.jpg"></div>
+        <div class="slide"><img src="foto7.jpg"></div>
+        <div class="slide"><img src="foto8.jpg"></div>
+        <div class="slide"><img src="foto9.jpg"></div>
+        <div class="slide"><img src="foto10.jpg"></div>
+    </div>
+
+    <button class="next" onclick="nextSlide()">❯</button>
+</div>
+
+<div class="footer">Made with love 💗</div>
+
+<script>
+let index = 0;
+const slider = document.getElementById("slider");
+const totalSlides = document.querySelectorAll(".slide").length;
+
+function showSlide() {
+    slider.style.transform = `translateX(-${index * 100}%)`;
+}
+
+function nextSlide() {
+    index = (index + 1) % totalSlides;
+    showSlide();
+}
+
+function prevSlide() {
+    index = (index - 1 + totalSlides) % totalSlides;
+    showSlide();
+}
+
+let autoSlide = setInterval(nextSlide, 3000);
+
+/* SWIPE */
+let startX = 0;
+let endX = 0;
+
+slider.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    clearInterval(autoSlide);
+});
+
+slider.addEventListener("touchmove", (e) => {
+    endX = e.touches[0].clientX;
+});
+
+slider.addEventListener("touchend", () => {
+    let diff = startX - endX;
+    if (diff > 50) nextSlide();
+    else if (diff < -50) prevSlide();
+});
+
+/* EMOJI */
+const emojis = ["🌸","💞","💐"];
+
+function createEmoji() {
+    const e = document.createElement("div");
+    e.className = "emoji";
+    e.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+    e.style.left = Math.random()*100+"vw";
+    e.style.fontSize = (20+Math.random()*20)+"px";
+    e.style.animationDuration = (5+Math.random()*5)+"s";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),10000);
+}
+setInterval(createEmoji, 500);
+
+/* CHIBI (emoji lucu) */
+const chibis = ["🧸","🐰","🐻","🎀","💖"];
+
+function createChibi(){
+    const c = document.createElement("div");
+    c.className="chibi";
+    c.innerText = chibis[Math.floor(Math.random()*chibis.length)];
+    c.style.left = Math.random()*100+"vw";
+    c.style.top = Math.random()*100+"vh";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),8000);
+}
+setInterval(createChibi,1500);
+
+/* BUBBLE */
+function createBubble(){
+    const b = document.createElement("div");
+    b.className="bubble";
+    let size = 10 + Math.random()*30;
+    b.style.width = size+"px";
+    b.style.height = size+"px";
+    b.style.left = Math.random()*100+"vw";
+    document.body.appendChild(b);
+    setTimeout(()=>b.remove(),8000);
+}
+setInterval(createBubble,800);
+</script>
+
+</body>
+</html>
